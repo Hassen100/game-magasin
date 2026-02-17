@@ -1,0 +1,135 @@
+<div class="recommendations-container">
+  <!-- Header -->
+  <div class="rec-header">
+    <h1>🤖 AI-Powered Recommendations</h1>
+    <p>Discover games tailored to your preferences with our AI engine</p>
+  </div>
+
+  <!-- Genre Selection -->
+  <section class="genre-selection">
+    <h2>Select Your Favorite Genres</h2>
+    <div class="genre-buttons">
+      <button
+        *ngFor="let genre of allGenres"
+        class="genre-btn"
+        [class.active]="isGenreSelected(genre)"
+        (click)="toggleGenre(genre)"
+      >
+        {{ genre }}
+      </button>
+    </div>
+  </section>
+
+  <!-- Personalized Recommendations -->
+  <section class="personalized-section">
+    <div class="section-header">
+      <h2>🎯 Personalized for You</h2>
+      <p>Based on your selected genres: <strong>{{ selectedGenres.join(', ') }}</strong></p>
+    </div>
+
+    <div class="personalized-grid" *ngIf="personalizedGames.length > 0">
+      <div
+        *ngFor="let game of personalizedGames"
+        class="personalized-card"
+        [routerLink]="['/game', game.id]"
+      >
+        <div class="card-image">
+          <img [src]="game.image" [alt]="game.title" />
+          <div class="ai-score" [style.background]="getScoreGradient(game.aiScore)">
+            {{ game.aiScore.toFixed(0) }}%
+          </div>
+        </div>
+
+        <div class="card-content">
+          <h3>{{ game.title }}</h3>
+          <p class="publisher">{{ game.publisher }}</p>
+          <p class="genre">{{ game.genre }}</p>
+
+          <div class="card-stats">
+            <span class="rating" [style.color]="getRatingColor(game.rating)">
+              ⭐ {{ game.rating }}/10
+            </span>
+            <span class="price">${{ game.price }}</span>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width]="game.aiScore + '%'"></div>
+          </div>
+          <p class="match-text">{{ game.aiScore.toFixed(0) }}% match</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="personalizedGames.length === 0" class="empty-message">
+      <p>Select at least one genre to get personalized recommendations</p>
+    </div>
+  </section>
+
+  <!-- Trending with AI Insights -->
+  <section class="trending-section">
+    <div class="section-header">
+      <h2>📈 Trending Games - AI Insights</h2>
+      <p>What the gaming community is loving right now</p>
+    </div>
+
+    <div class="trending-carousel">
+      <div *ngFor="let game of trendingGames" class="trending-card" [routerLink]="['/game', game.id]">
+        <div class="trending-image">
+          <img [src]="game.image" [alt]="game.title" />
+          <div class="trending-badge">Trending</div>
+        </div>
+
+        <div class="trending-info">
+          <div class="rank">{{ trendingGames.indexOf(game) + 1 }}</div>
+          <h3>{{ game.title }}</h3>
+          <p class="insight">{{ game.insight }}</p>
+
+          <div class="trending-stats">
+            <span class="rating" [style.color]="getRatingColor(game.rating)">
+              {{ game.rating }}/10 ⭐
+            </span>
+            <span class="popularity">{{ game.popularity }}% Popular</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How AI Works -->
+  <section class="how-it-works">
+    <h2>How Our AI Recommendations Work</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Smart Analysis</h3>
+        <p>Our AI analyzes game genres, ratings, and player popularity to understand your preferences</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Personalization</h3>
+        <p>Select your favorite genres and get recommendations tailored specifically for you</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Quality Score</h3>
+        <p>Each recommendation includes an AI score showing how well it matches your interests</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Real-time Updates</h3>
+        <p>Our algorithm constantly learns from trending games and community feedback</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Ready to explore more games?</h2>
+    <p>Browse our complete catalogue for even more options</p>
+    <a routerLink="/catalogue" class="cta-button">Explore Full Catalogue</a>
+  </section>
+</div>

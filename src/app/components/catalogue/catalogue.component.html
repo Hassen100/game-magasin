@@ -1,0 +1,94 @@
+<div class="catalogue-container">
+  <!-- Header -->
+  <div class="catalogue-header">
+    <h1>🎮 Game Catalogue</h1>
+    <p>{{ filteredGames.length }} games found</p>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <!-- Search Bar -->
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search games by title, genre, or tag..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label>Genre</label>
+        <select [(ngModel)]="selectedGenre" (change)="onGenreChange()">
+          <option value="">All Genres</option>
+          <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Sort By</label>
+        <select [(ngModel)]="sortBy" (change)="filterGames()">
+          <option value="popularity">Most Popular</option>
+          <option value="rating">Highest Rated</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+      </div>
+
+      <button class="view-toggle" (click)="toggleViewMode()" title="Toggle view mode">
+        {{ viewMode === 'grid' ? '≡' : '⊞' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Games Display -->
+  <div [class]="'games-container games-' + viewMode">
+    <div *ngFor="let game of filteredGames" class="game-item" [routerLink]="['/game', game.id]">
+      <div class="game-image">
+        <img [src]="game.image" [alt]="game.title" />
+        <div class="rating-badge">{{ game.rating }}/10 ⭐</div>
+        <div class="price-badge">${{ game.price }}</div>
+      </div>
+
+      <div class="game-details">
+        <h3>{{ game.title }}</h3>
+        <p class="publisher">By {{ game.publisher }}</p>
+        <p class="genre">{{ game.genre }}</p>
+
+        <div class="platforms">
+          <span *ngFor="let platform of game.platform.split(', ')" class="platform">
+            {{ platform }}
+          </span>
+        </div>
+
+        <div class="tags">
+          <span *ngFor="let tag of game.tags" class="tag">{{ tag }}</span>
+        </div>
+
+        <div class="stats">
+          <span class="popularity">{{ game.popularity }}% Popular</span>
+          <span class="release">{{ game.releaseDate | date : 'MMM yyyy' }}</span>
+        </div>
+
+        <div class="description" *ngIf="viewMode === 'list'">
+          {{ game.description }}
+        </div>
+
+        <button class="view-button">View Details →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredGames.length === 0" class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h2>No games found</h2>
+    <p>Try adjusting your search or filters</p>
+    <button (click)="searchQuery = ''; selectedGenre = ''; filterGames()" class="reset-button">
+      Reset Filters
+    </button>
+  </div>
+</div>
