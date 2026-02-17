@@ -1,0 +1,100 @@
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1>🎮 Game Store Dashboard</h1>
+      <p>Explore the latest games, trends, and AI-powered recommendations</p>
+    </div>
+  </div>
+
+  <!-- Statistics Section -->
+  <section class="stats-section">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalGames }}</h3>
+        <p>Games in Store</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⭐</div>
+      <div class="stat-content">
+        <h3>{{ stats.averageRating }}/10</h3>
+        <p>Average Rating</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalGenres }}</h3>
+        <p>Genres Available</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Games Section -->
+  <section class="games-section">
+    <div class="section-header">
+      <h2>🔥 Popular Games</h2>
+      <a routerLink="/catalogue" class="view-all">View All →</a>
+    </div>
+    <div class="games-grid">
+      <div *ngFor="let game of popularGames" class="game-card" [routerLink]="['/game', game.id]">
+        <div class="game-image">
+          <img [src]="game.image" [alt]="game.title" />
+          <div class="rating-badge">{{ game.rating }}/10</div>
+        </div>
+        <div class="game-info">
+          <h3>{{ game.title }}</h3>
+          <p class="genre">{{ game.genre }}</p>
+          <div class="platforms">
+            <span *ngFor="let platform of game.platform.split(', ')" class="platform-tag">
+              {{ platform }}
+            </span>
+          </div>
+          <div class="game-footer">
+            <span class="price">${{ game.price }}</span>
+            <span class="popularity">{{ game.popularity }}% Popular</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Games with AI Insights -->
+  <section class="trending-section">
+    <div class="section-header">
+      <h2>📈 Trending Now (AI Insights)</h2>
+    </div>
+    <div class="trending-list">
+      <div *ngFor="let game of trendingGames" class="trending-item" [routerLink]="['/game', game.id]">
+        <div class="trending-image">
+          <img [src]="game.image" [alt]="game.title" />
+          <div class="trending-number">{{ trendingGames.indexOf(game) + 1 }}</div>
+        </div>
+        <div class="trending-content">
+          <h3>{{ game.title }}</h3>
+          <p class="insight">💡 {{ game.insight }}</p>
+          <div class="trending-meta">
+            <span class="tag" *ngFor="let tag of game.tags.slice(0, 2)">{{ tag }}</span>
+          </div>
+        </div>
+        <div class="trending-rating">
+          <div class="rating-circle">
+            <span>{{ game.rating }}</span>
+            <small>★</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to find your next favorite game?</h2>
+      <p>Browse our complete catalogue and discover games tailored to your taste</p>
+      <a routerLink="/catalogue" class="cta-button">Explore Catalogue</a>
+    </div>
+  </section>
+</div>
